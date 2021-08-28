@@ -8,9 +8,11 @@ const { calculatePrice } = require("../utils/prices");
  * @returns
  */
 const mapCategories = ({ values }) => {
-  const categories = values.map(({ path_from_root }) => {
-    return path_from_root.map((category) => category.name);
-  });
+  const categories = values
+    .map(({ path_from_root }) => {
+      return path_from_root.map((category) => category.name);
+    })
+    .flat();
 
   return categories;
 };
