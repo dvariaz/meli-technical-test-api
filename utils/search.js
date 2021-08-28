@@ -1,16 +1,26 @@
 // Utils
 const { calculatePrice } = require("../utils/prices");
 
-const extractCategories = (category) => {
-  const {
-    values: { path_from_root },
-  } = category;
-
-  const categories = path_from_root.map((categoryItem) => categoryItem.name);
+/**
+ * Function to extract categories from query result
+ *
+ * @param {*} category
+ * @returns
+ */
+const extractCategories = ({ values }) => {
+  const categories = values.map(({ path_from_root }) => {
+    return path_from_root.map((category) => category.name);
+  });
 
   return categories;
 };
 
+/**
+ * Function to extract items from a query result
+ *
+ * @param {*} results
+ * @returns
+ */
 const extractItems = (results) => {
   const items = results.map((result) => {
     const { id, title, price, currency_id, thumbnail, condition, shipping } =

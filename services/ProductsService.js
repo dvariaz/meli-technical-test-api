@@ -15,9 +15,7 @@ const searchProductsByQuery = async (query) => {
   const response = await fetch(url);
   const { results, filters } = await response.json();
 
-  const categories = extractCategories(
-    filters.filter((filter) => filter.id === "category")
-  );
+  const [categories] = filters.filter((filter) => filter.id === "category");
   const items = extractItems(results);
 
   return {
@@ -25,7 +23,7 @@ const searchProductsByQuery = async (query) => {
       name: "Author Name",
       lastname: "Author Lastname",
     },
-    categories,
+    categories: extractCategories(categories),
     items,
   };
 };
