@@ -12,4 +12,12 @@ router.get("/", async (req, res) => {
   return res.status(200).json(result);
 });
 
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  const product = await ProductsService.getProductById(id);
+
+  return res.status(200).json(product);
+});
+
 module.exports = router;

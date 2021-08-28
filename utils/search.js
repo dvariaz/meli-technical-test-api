@@ -7,7 +7,7 @@ const { calculatePrice } = require("../utils/prices");
  * @param {*} category
  * @returns
  */
-const extractCategories = ({ values }) => {
+const mapCategories = ({ values }) => {
   const categories = values.map(({ path_from_root }) => {
     return path_from_root.map((category) => category.name);
   });
@@ -21,7 +21,7 @@ const extractCategories = ({ values }) => {
  * @param {*} results
  * @returns
  */
-const extractItems = (results) => {
+const mapProducts = (results) => {
   const items = results.map((result) => {
     const { id, title, price, currency_id, thumbnail, condition, shipping } =
       result;
@@ -39,4 +39,37 @@ const extractItems = (results) => {
   return items;
 };
 
-module.exports = { extractCategories, extractItems };
+/**
+ * Function to extract product information from API result
+ *
+ * @param {*} data
+ * @returns
+ */
+const mapProductDetails = (data) => {
+  const {
+    id,
+    title,
+    price,
+    currency_id,
+    pictures,
+    condition,
+    shipping,
+    sold_quantity,
+    description,
+  } = data;
+
+  const [picture] = pictures.map((pictureItem) => pictureItem.url);
+
+  return {
+    id,
+    title,
+    price: calculatePrice(price, currency_id),
+    picture,
+    condition,
+    free_shipping: shipping.free_shipping,
+    sold_quantity,
+    description,
+  };
+};
+
+module.exports = { mapCategories, mapProductDetails, mapProducts };
