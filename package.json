@@ -4,7 +4,14 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www"
+    "dev": "nodemon ./bin/www",
+    "test": "jest --watch"
+  },
+  "jest": {
+    "verbose": true,
+    "setupFilesAfterEnv": [
+      "./tests/jest.setup.js"
+    ]
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -13,10 +20,12 @@
     "dotenv": "^10.0.0",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
+    "jest": "^27.1.0",
     "morgan": "~1.9.1",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
+    "jest-json-schema": "^5.0.0",
     "nodemon": "^2.0.12"
   }
 }

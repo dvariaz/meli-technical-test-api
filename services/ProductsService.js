@@ -5,7 +5,7 @@ const {
   mapCategories,
   mapProducts,
   mapProductDetails,
-} = require("../utils/search");
+} = require("../mappers/search");
 
 /**
  * Service to search products by a given query

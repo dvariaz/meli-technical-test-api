@@ -5,7 +5,7 @@
  * @param {*} currency
  * @returns
  */
-const calculatePrice = (currentPrice, currency) => {
+const mapPrice = (currentPrice, currency) => {
   let [integer, decimals] = String(currentPrice).split(".");
 
   integer = parseInt(integer);
@@ -18,4 +18,4 @@ const calculatePrice = (currentPrice, currency) => {
   };
 };
 
-module.exports = { calculatePrice };
+module.exports = { mapPrice };
