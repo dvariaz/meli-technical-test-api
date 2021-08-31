@@ -5,19 +5,27 @@ const router = express.Router();
 const ProductsService = require("../services/ProductsService");
 
 router.get("/", async (req, res) => {
-  const { q } = req.query;
+  try {
+    const { q } = req.query;
 
-  const result = await ProductsService.searchProductsByQuery(encodeURI(q));
+    const result = await ProductsService.searchProductsByQuery(encodeURI(q));
 
-  return res.status(200).json(result);
+    return res.status(200).json(result);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
 });
 
 router.get("/:id", async (req, res) => {
-  const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-  const product = await ProductsService.getProductById(id);
+    const product = await ProductsService.getProductById(id);
 
-  return res.status(200).json(product);
+    return res.status(200).json(product);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
 });
 
 module.exports = router;

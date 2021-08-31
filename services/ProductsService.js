@@ -14,22 +14,29 @@ const {
  * @returns
  */
 const searchProductsByQuery = async (query) => {
-  const url = `${process.env.PRODUCTS_API_URL}/sites/MLA/search?q=${query}`;
+  try {
+    const url = `${process.env.PRODUCTS_API_URL}/sites/MLA/search?q=${query}`;
 
-  const response = await fetch(url);
-  const { results, filters } = await response.json();
+    const response = await fetch(url);
+    const { message, results, filters } = await response.json();
 
-  const [categories] = filters.filter((filter) => filter.id === "category");
-  const items = mapProducts(results);
+    if (!response.ok) throw new Error(message);
 
-  return {
-    author: {
-      name: "Author Name",
-      lastname: "Author Lastname",
-    },
-    categories: mapCategories(categories),
-    items,
-  };
+    const [categories] = filters.filter((filter) => filter.id === "category");
+    const items = mapProducts(results);
+
+    return {
+      author: {
+        name: "Author Name",
+        lastname: "Author Lastname",
+      },
+      categories: mapCategories(categories),
+      items,
+    };
+  } catch (err) {
+    console.error(err);
+    throw new Error(`Error searching products by query: ${query}`);
+  }
 };
 
 /**
@@ -39,27 +46,32 @@ const searchProductsByQuery = async (query) => {
  * @returns
  */
 const getProductById = async (id) => {
-  const productUrl = `${process.env.PRODUCTS_API_URL}/items/${id}`;
-  const descriptionUrl = `${process.env.PRODUCTS_API_URL}/items/${id}/description`;
+  try {
+    const productUrl = `${process.env.PRODUCTS_API_URL}/items/${id}`;
+    const descriptionUrl = `${process.env.PRODUCTS_API_URL}/items/${id}/description`;
 
-  const responses = await Promise.all([
-    fetch(productUrl),
-    fetch(descriptionUrl),
-  ]);
-  const [productData, descriptionData] = await Promise.all(
-    responses.map((response) => response.json())
-  );
+    const responses = await Promise.all([
+      fetch(productUrl),
+      fetch(descriptionUrl),
+    ]);
+    const [productData, descriptionData] = await Promise.all(
+      responses.map((response) => response.json())
+    );
 
-  return {
-    author: {
-      name: "Author Name",
-      lastname: "Author Lastname",
-    },
-    item: mapProductDetails({
-      ...productData,
-      description: descriptionData.plain_text,
-    }),
-  };
+    return {
+      author: {
+        name: "Author Name",
+        lastname: "Author Lastname",
+      },
+      item: mapProductDetails({
+        ...productData,
+        description: descriptionData.plain_text,
+      }),
+    };
+  } catch (err) {
+    console.error(err);
+    throw new Error(`Error searching product by id: ${id}`);
+  }
 };
 
 module.exports = {
